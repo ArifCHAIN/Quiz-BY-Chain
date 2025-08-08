@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>pre TEST ขำๆวิชา ไทย by CHAIN ROGER</title>
+<style>
+  :root{--bg:#f7f7f9;--card:#fff;--accent:#0b74de}
+  body{font-family: "Noto Sans Thai", "Segoe UI", Roboto, Arial; background:var(--bg); margin:0; padding:24px; color:#111}
+  h1{font-size:20px;text-align:center;margin:4px 0 14px}
+  .container{max-width:900px;margin:0 auto}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+  button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+  button.secondary{background:#666}
+  .quiz{display:grid;gap:12px}
+  .q{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+  .q h3{margin:0 0 6px;font-size:15px}
+  .opt{display:block;padding:6px 8px;border-radius:8px;margin:6px 0;cursor:pointer;border:1px solid transparent}
+  .opt input{margin-right:8px}
+  .q.right{border-left:6px solid #27ae60;background:#f0f9f3}
+  .q.wrong{border-left:6px solid #e74c3c;background:#fff5f5}
+  .correct-answer{margin-top:8px;padding:8px;background:#eef6ff;border-radius:6px;color:#08306b;display:none}
+  .scoreboard{background:var(--card);padding:10px;border-radius:10px;margin:12px 0;text-align:center}
+  .footer-warning{position:fixed;left:0;right:0;bottom:0;background:#c82333;color:#fff;padding:8px;text-align:center;font-size:13px}
+  .rating{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:12px}
+  .star{font-size:26px;cursor:pointer;color:#bbb}
+  .star.selected{color:gold}
+  .feedback{display:block;width:92%;margin:8px auto;padding:8px;border-radius:6px;border:1px solid #ddd}
+  .meta{font-size:13px;color:#444;margin-top:6px;text-align:center}
+  @media (max-width:540px){body{padding:12px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>pre TEST ขำๆวิชา ไทย by CHAIN ROGER</h1>
+
+  <div class="controls">
+    <button id="submitBtn">ส่งคำตอบ</button>
+    <button id="retryWrongBtn" class="secondary">ทำใหม่เฉพาะข้อที่ผิด</button>
+    <button id="showKeyBtn" class="secondary">ดูเฉลย</button>
+    <button id="resetBtn" class="secondary">ทำใหม่ทั้งหมด</button>
+  </div>
+
+  <div id="scoreArea" class="scoreboard" style="display:none"></div>
+
+  <div id="quiz" class="quiz"></div>
+
+  <div class="rating">
+    <div style="text-align:center;">
+      <div style="margin-bottom:6px">ให้คะแนนเว็บนี้:</div>
+      <span class="star" data-star="1">★</span>
+      <span class="star" data-star="2">★</span>
+      <span class="star" data-star="3">★</span>
+      <span class="star" data-star="4">★</span>
+      <span class="star" data-star="5">★</span>
+      <div style="margin-top:8px">
+        <textarea id="feedback" class="feedback" rows="3" placeholder="พิมพ์คำแนะนำเพิ่มเติม..."></textarea>
+        <div style="text-align:center;margin-top:6px"><button id="sendFeedback" class="secondary">บันทึกคำติชม (จำลอง)</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">ระบบนี้เก็บเฉพาะในหน้าเครื่องของคุณ — ไม่ได้ส่งข้อมูลออกไปไหน</div>
+</div>
+
+<div class="footer-warning">
+ระบบนี้จัดทำขึ้นเพื่อความสนุก เเละฝึกสมอง ข้อสอบนี้เป็นเพียงการคาดเดาจากเนื้อหาเเละเเนวข้อสอบ ตัวผู้จัดไม่มีส่วนเกี่ยวข้องกับการออกข้อสอบตัวจริง โปรดใช้วิจารณญาณในการทำข้อสอบ
+</div>
+
+<script>
+/* =============== ข้อสอบ (จากข้อมูลคุณ) ===============
+   ตัวเลือกเรียงตาม ก., ข., ค., ง. -> index 0..3
+   เฉลยเก็บเป็น index (0=ก, 1=ข, 2=ค, 3=ง)
+*/
+const questions = [
+{q:"1. ข้อใดคือความหมายของการสื่อสารตามแนวคิดของ Everett M. Rogers และ F. Floyd Shoemaker",
+ options:["กระบวนการที่สารถูกส่งจากผู้ส่งสารไปยังผู้รับสาร","การตีความหมายโดยสัญชาตญาณต่อท่าทาง","การแสดงปฏิสัมพันธ์ทางสังคมโดยใช้สัญลักษณ์","การถ่ายทอดข้อมูลอย่างมีเจตนาโดยใช้ระบบสัญญาณ"], a:0},
+{q:"2. ข้อใดไม่ใช่ความสำคัญของการสื่อสารที่ระบุในแหล่งข้อมูล",
+ options:["เป็นกระบวนการทางสังคม","เป็นเครื่องมือสร้างความเข้าใจระหว่างสมาชิก","เป็นกระบวนการถ่ายทอดวัฒนธรรมจากรุ่นสู่รุ่น","เป็นเครื่องมือในการควบคุมความคิดของบุคคล"], a:3},
+{q:"3. ข้อใดคือความหมายของการสื่อสารตามแนวคิดของ Edward Sapir",
+ options:["กระบวนการที่สารถูกส่งจากผู้ส่งสารไปยังผู้รับสาร","การตีความหมายโดยสัญชาตญาณต่อท่าทางที่แสดงเป็นสัญลักษณ์โดยไม่รู้ตัว","การแสดงปฏิสัมพันธ์ทางสังคมโดยใช้สัญลักษณ์และระบบสาร","การถ่ายทอดข้อมูลอย่างมีเจตนาโดยใช้ระบบสัญญาณ"], a:1},
+{q:"4. คำกล่าวที่ว่า \"การสื่อสาร หมายถึง การติดต่อระหว่างมนุษย์ด้วยวิธีการต่าง ๆ เพื่อให้อีกฝ่ายรับรู้ความหมาย และเกิดการตอบสนอง\" เป็นของนักวิชาการท่านใด",
+ options:["George Gerbner","John Lyons","กุสุมา รักษมณี และคณะ","สวนิต ยมาภัย"], a:2},
+{q:"5. องค์ประกอบการสื่อสารตามแนวคิดของ Harold D. Laswell มีกี่องค์ประกอบ",
+ options:["3","4","5","6"], a:2},
+{q:"6. ข้อใดไม่ใช่คุณสมบัติสำคัญของผู้ส่งสารที่มีประสิทธิภาพตามแหล่งข้อมูล",
+ options:["ความรู้ในสารและความสามารถในการสื่อสาร","บุคลิกลักษณะหรือรูปลักษณ์","การเป็นคนเก็บตัวไม่เปิดเผย","การเป็นที่ยอมรับของสังคม"], a:2},
+{q:"7. หากผู้ส่งสารมีวัตถุประสงค์ \"เพื่อชักจูงใจหรือโน้มน้าวใจ\" ผู้รับสารจะมีวัตถุประสงค์ใด",
+ options:["เพื่อรับทราบ","เพื่อศึกษาเรียนรู้","เพื่อกระทำหรือตัดสินใจ","เพื่อความพอใจหรือรื่นเริง"], a:2},
+{q:"8. วัตถุประสงค์ในข้อใดจัดอยู่ในกลุ่ม \"เพื่อรักษาสัมพันธไมตรีทางสังคม\" ของการสื่อสาร",
+ options:["เพื่อแจ้งให้ทราบ","เพื่อสอบถามหรือขอความช่วยเหลือ","เพื่อสอนหรือให้การศึกษา","เพื่อสร้างความพอใจหรือบันเทิง"], a:1},
+{q:"9. การสื่อสารที่เน้นจำนวนผู้สื่อสารจำนวนน้อย คือการสื่อสารประเภทใด",
+ options:["การสื่อสารภายในบุคคล","การสื่อสารระหว่างบุคคล","การสื่อสารกลุ่มใหญ่","การสื่อสารมวลชน"], a:1},
+{q:"10. การสื่อสารที่ใช้ระบบเครือข่ายดาวเทียมและเคเบิลใยแก้ว เป็นพัฒนาการของการสื่อสารในยุคใด",
+ options:["ยุคโบราณ","ยุคเกษตรกรรม","ยุคอุตสาหกรรม","ยุคเทคโนโลยีสารสนเทศ"], a:3},
+{q:"11. ข้อใดไม่ใช่สาเหตุที่ทำให้การสื่อสารไม่สัมฤทธิ์ผลจากตัวผู้ส่งสาร",
+ options:["ความรู้ความสามารถ","บุคลิกลักษณะ","สภาพร่างกายและจิตใจ","การมีกรอบอ้างอิงที่แตกต่างกัน"], a:3},
+{q:"12. การใช้คำศัพท์เฉพาะมากเกินไปในสารจัดอยู่ในสาเหตุใดที่ทำให้การสื่อสารไม่สัมฤทธิ์ผล",
+ options:["สารมีเนื้อหาสาระค่อนข้างยาก","สารขาดความชัดเจน","สารขาดความครบถ้วน","สารขาดความสุจริตใจ"], a:0},
+{q:"13. กระบวนการทำงานของสมองที่ก่อให้เกิดสิ่งต่างๆ ในใจ เรียกว่าอะไร",
+ options:["การคิด","ความคิด","การใคร่ครวญ","สติปัญญา"], a:0},
+{q:"14. ข้อใดคือความหมายของ \"ความคิด\"",
+ options:["กระบวนการทำงานของสมอง","สิ่งที่นึกรู้ขึ้นในใจ หรือความรู้ที่เกิดขึ้นภายในใจ","การกำหนดปัญหาเพื่อหาสาเหตุ","กระบวนการคิดเพื่อสร้างสิ่งใหม่"], a:1},
+{q:"15. การคิดที่เน้นการกำหนดปัญหา หาสาเหตุ ตั้งจุดประสงค์ และพิจารณาทางเลือก จัดเป็นความคิดประเภทใด",
+ options:["การคิดฝัน","การคิดใคร่ครวญ","การคิดแก้ปัญหา","การคิดสร้างสรรค์"], a:2},
+{q:"16. ข้อใดคือลักษณะของการ \"คิดสร้างสรรค์\"",
+ options:["การคิดที่ทำให้เกิดความสุขหรือเพลิดเพลิน","การคิดที่มีจุดมุ่งหมายจำกัดในขอบเขตความรู้","กระบวนการคิดเพื่อให้ได้สิ่งแปลกใหม่และนำไปใช้ประโยชน์ได้","การคิดเพื่อหาคำตอบจากสิ่งต่างๆ ที่สงสัย"], a:2},
+{q:"17. คำกล่าวที่ว่า \"ก่อนพูดเราเป็นนายของคำพูด แต่เมื่อพูดไปแล้ว คำพูดเป็นนายของเรา\" สื่อถึงความสัมพันธ์ระหว่างความคิดกับการใช้ภาษาในด้านใด",
+ options:["ภาษาที่สะท้อนอารมณ์ความรู้สึก","ภาษาที่สะท้อนค่านิยมสังคม","ความสำคัญของการคิดก่อนพูด","ภาษาที่สะท้อนความคิดร่วมสมัย"], a:2},
+{q:"18. ข้อใดคือสิ่งที่ภาษา \"สะท้อนผ่านการใช้ภาษา\" ตามแหล่งข้อมูล",
+ options:["อารมณ์ความรู้สึก ทรรศนะ และวิธีคิดของผู้ส่งสาร","ประสบการณ์และความรู้เดิมของผู้รับสาร","สภาพร่างกายและจิตใจของผู้ส่งสาร","เทคโนโลยีที่ใช้ในการสื่อสาร"], a:0},
+{q:"19. การจัดระเบียบความคิดด้วยการเล่าเหตุการณ์ตามลำดับเวลาที่เกิดขึ้นก่อน-หลัง จัดเป็นลำดับความคิดแบบใด",
+ options:["ลำดับความคิดตามสถานที่หรือทิศทาง","ลำดับความคิดโดยการอธิบายหรือให้คำจำกัดความ","ลำดับความคิดตามเวลาหรือเหตุการณ์","ลำดับความคิดโดยการแสดงเหตุผล"], a:2},
+{q:"20. การจัดระเบียบความคิดด้วยการระบุความหมายและองค์ประกอบของแนวคิด จัดเป็นลำดับความคิดแบบใด",
+ options:["ลำดับความคิดตามเวลาหรือเหตุการณ์","ลำดับความคิดตามสถานที่หรือทิศทาง","ลำดับความคิดโดยการอธิบายหรือให้คำจำกัดความ","ลำดับความคิดโดยการแสดงเหตุผล"], a:2},
+{q:"21. \"ปัญญาที่สามารถรับรู้ หรือให้เหตุผลที่ถูกต้องได้\" คือความหมายของสิ่งใด",
+ options:["การคิดฝัน","การคิดใคร่ครวญ","วิจารณญาณ","การวิเคราะห์"], a:2},
+{q:"22. ข้อใดไม่ใช่หลักการใช้วิจารณญาณในการอ่าน",
+ options:["พิจารณาความถูกต้องของภาษา","พิจารณาความต่อเนื่องของประโยค","พิจารณาแต่ข้อคิดเห็นของผู้เขียน","พิจารณาความแตกต่างของเนื้อหาเพื่อประกอบการตัดสินใจ"], a:2},
+{q:"23. ข้อใดคือมารยาทการพูดที่ควรปฏิบัติ",
+ options:["พูดอวดตนว่าดีกว่าผู้ฟัง","ผูกขาดการพูดแต่เพียงผู้เดียว","พูดด้วยถ้อยคำสุภาพ ไม่ใช้คำหยาบ","พูดกระทบหรือเสียดสีผู้อื่นให้เสียหาย"], a:2},
+{q:"24. การใช้คำที่ \"ไม่ก่อให้เกิดความหมายกำกวม\" จัดอยู่ในหลักการใช้ถ้อยคำในด้านใด",
+ options:["การใช้คำให้ตรงความหมาย","การใช้คำให้ตรงตามความนิยม","การใช้คำให้เหมาะสมกับกาลเทศะ","การรู้จักใช้คำหลากคำไม่ซ้ำซาก"], a:0},
+{q:"25. ข้อใดคือความหมายของ \"คำ\" ตามแหล่งข้อมูล",
+ options:["เสียงที่เปล่งออกมาแล้วมีความหมาย","พยัญชนะที่นำมาประสมกับสระ","การประสมเสียงพยัญชนะ สระ และวรรณยุกต์","หน่วยเสียงที่เล็กที่สุดในภาษา"], a:0},
+{q:"26. คำว่า \"เสือผู้หญิง\" หรือ \"เต่า\" ในประโยค \"สุชาติเป็นเสือผู้หญิง อย่าทำตัวเป็นเต่าอยู่เลย\" จัดเป็นคำชนิดใด",
+ options:["คำที่มีความหมายตรง","คำที่มีความหมายเดียว","คำที่มีความหมายโดยนัย","คำที่มีหลายความหมาย"], a:2},
+{q:"27. ประโยคในข้อใดจัดเป็น \"ประโยคความรวม\" แบบ \"เนื้อความคล้อยตามกัน\"",
+ options:["ฉันอาบน้ำแล้วจึงรับประทานอาหาร","เธอเป็นคนสวยแต่พูดจาไม่สุภาพ","คุณจะดื่มชาหรือกาแฟ","เนื่องจากนิสิตตั้งใจเรียน จึงได้ผลการเรียนดี"], a:0},
+{q:"28. ประโยค \"ห้ามจอดรถขวางประตู\" จัดเป็นประโยคตามเจตนาของผู้ส่งสารชนิดใด",
+ options:["ประโยคบอกเล่า","ประโยคปฏิเสธ","ประโยคคำสั่ง","ประโยคขอร้อง"], a:2},
+{q:"29. ข้อใดคือความหมายของ \"สำนวน\" ตามแหล่งข้อมูล",
+ options:["ถ้อยคำที่คมคาย งดงาม และรวมใจความของเรื่องยาวให้สั้นลง","การใช้ภาษาที่ตรงไปตรงมา เน้นสาระสำคัญ","การบรรยายเรื่องราวอย่างละเอียดลออ","การให้คำแนะนำหรือสั่งสอน"], a:0},
+{q:"30. สำนวน \"ขนทรายเข้าวัด\" เกิดจากมูลเหตุใด",
+ options:["ธรรมชาติ","การกระทำ","ขนบธรรมเนียม ประเพณี","นิทาน ตำนาน"], a:2},
+{q:"31. ข้อใดคือลักษณะสำคัญของ \"บรรยายโวหาร\"",
+ options:["เสนอเรื่องราวอย่างละเอียดลออ เห็นภาพชัดเจน","แสดงการเปรียบเทียบเพื่อให้เรื่องชัดเจนขึ้น","กระชับ ตรงไปตรงมา เน้นสาระสำคัญ","ชี้ให้เห็นคุณและโทษ โน้มน้าวใจ"], a:2},
+{q:"32. ข้อความ \"ความรักของเขาอบอุ่นเหมือนแสงแดดยามเช้า ทำให้คนรอบข้างรู้สึกสบายใจและปลอดภัย\" จัดเป็นโวหารชนิดใด",
+ options:["บรรยายโวหาร","พรรณนาโวหาร","อุปมาโวหาร","เทศนาโวหาร"], a:2},
+{q:"33. ข้อใดคือสิ่งที่ไม่นำมาพิจารณาในการใช้ระดับภาษา",
+ options:["ผู้รับสาร","เนื้อหาของสาระ","สถานที่ตั้งของสำนักงาน","วัตถุประสงค์"], a:2},
+{q:"34. ข้อใดคือลักษณะของ \"ภาษาแบบแผน\"",
+ options:["ไม่คำนึงถึงแบบแผน เน้นสื่อความหมายให้เข้าใจ","สละสลวยกว่าภาษาปากเล็กน้อย","เป็นทางการ ถูกต้องตามระเบียบแบบแผน","ใช้ในการสนทนาในชีวิตประจำวันกับคนคุ้นเคย"], a:2},
+{q:"35. ข้อใดคือวัตถุประสงค์หลักของการใช้ภาษาพูดในงานเขียน",
+ options:["เพื่อเน้นการสื่อสารข้อมูล","เพื่อให้ผู้รับสารเห็นภาพ เกิดจินตนาการ และอารมณ์ความรู้สึกชัดเจน","เพื่อใช้เป็นเอกสารทางราชการ","เพื่อให้ข้อมูลทางวิชาการที่ถูกต้อง"], a:1},
+{q:"36. ข้อความใดที่จัดเป็น \"ภาษาเขียน\"",
+ options:["หวัดดีจ้ะป้า","ไปไหนมาแต่เช้าเชียวจ๊ะ","คิดแล้วกันว่าทำไมเราไม่มีแม่เหมือนในละคร","ใช้ถ้อยคำกระชับ ตรงไปตรงมา สื่อความหมายของสาระสำคัญ"], a:3},
+{q:"37. ข้อความ \"นาย ณภัทร ตัดใจ! ขายรถหรูรุ่นพิเศษ อึ้งมาก โพสต์ไม่ถึง 2 ชั่วโมงรู้เรื่อง\" จัดเป็นการใช้ภาษาไทยในสภาพการณ์ใด",
+ options:["ที่เป็นทางการ","ที่ไม่เป็นทางการมากนัก","ที่ไม่เป็นทางการ","ภาษาแบบแผน"], a:2},
+{q:"38. ข้อความ \"วิถีวัฒนธรรมการเคารพเท้าของผู้มีพระคุณ\" จัดเป็นการใช้ภาษาไทยในสภาพการณ์ใด",
+ options:["ที่เป็นทางการ","ที่ไม่เป็นทางการมากนัก","ที่ไม่เป็นทางการ","ภาษาปาก"], a:0}
+];
+
+const quizDiv = document.getElementById("quiz");
+const submitBtn = document.getElementById("submitBtn");
+const resetBtn = document.getElementById("resetBtn");
+const showKeyBtn = document.getElementById("showKeyBtn");
+const retryWrongBtn = document.getElementById("retryWrongBtn");
+const scoreArea = document.getElementById("scoreArea");
+
+function buildQuiz(){
+  quizDiv.innerHTML = "";
+  questions.forEach((it, idx) => {
+    const qdiv = document.createElement("div");
+    qdiv.className = "q";
+    qdiv.id = "q"+idx;
+    const h = document.createElement("h3");
+    h.innerText = `${idx+1}. ${it.q.replace(/^\d+\.\s*/,'')}`;
+    qdiv.appendChild(h);
+    it.options.forEach((opt,optIdx) => {
+      const label = document.createElement("label");
+      label.className = "opt";
+      label.innerHTML = `<input type="radio" name="q${idx}" value="${optIdx}"> ${String.fromCharCode(0x0E01 + optIdx)}. ${opt}`;
+      qdiv.appendChild(label);
+      // click label highlight
+      label.addEventListener("click", ()=> {
+        // remove temp classes
+        label.parentElement.querySelectorAll(".opt").forEach(l=>l.style.background="");
+        label.style.background="#f1f8ff";
+      });
+    });
+    // correct answer display (hidden)
+    const key = document.createElement("div");
+    key.className = "correct-answer";
+    key.id = "key"+idx;
+    key.innerHTML = `<strong>คำตอบที่ถูกต้อง:</strong> ${["ก","ข","ค","ง"][it.a]}. ${it.options[it.a]}`;
+    qdiv.appendChild(key);
+    quizDiv.appendChild(qdiv);
+  });
+  scoreArea.style.display="none";
+}
+
+function submitQuiz(){
+  let correct=0;
+  let answeredCount=0;
+  const wrongList=[];
+  questions.forEach((it,idx)=>{
+    const qdiv = document.getElementById("q"+idx);
+    qdiv.classList.remove("right","wrong");
+    const sel = document.querySelector(`input[name="q${idx}"]:checked`);
+    if(sel){
+      answeredCount++;
+      const val = parseInt(sel.value);
+      if(val === it.a){
+        qdiv.classList.add("right"); correct++;
+      } else {
+        qdiv.classList.add("wrong"); wrongList.push(idx+1);
+      }
+    } else {
+      // not answered = treat as wrong
+      qdiv.classList.add("wrong"); wrongList.push(idx+1);
+    }
+  });
+  const percent = Math.round((correct/questions.length)*100);
+  scoreArea.style.display="block";
+  scoreArea.innerHTML = `<strong>ผลลัพธ์:</strong> ${correct} / ${questions.length} ข้อ (${percent}%)<br>
+    ตอบแล้ว ${answeredCount} ข้อ — <span style="color:#e74c3c">${wrongList.length} ข้อผิด</span>
+    ${ wrongList.length ? "<br>ข้อที่ทำผิด: " + wrongList.join(", ") : "" }`;
+  // auto-show answers for wrong items? keep hidden until user clicks ดูเฉลย
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showAnswerKeys(){
+  // reveal all keys
+  questions.forEach((it,idx)=>{
+    document.getElementById("key"+idx).style.display = "block";
+  });
+}
+
+function resetAll(){
+  // clear radios and classes
+  questions.forEach((_,idx)=>{
+    const qdiv = document.getElementById("q"+idx);
+    qdiv.classList.remove("right","wrong");
+    document.querySelectorAll(`input[name="q${idx}"]`).forEach(i=>i.checked=false);
+    document.getElementById("key"+idx).style.display = "none";
+    qdiv.querySelectorAll(".opt").forEach(l=>l.style.background="");
+  });
+  scoreArea.style.display="none";
+}
+
+function retryWrong(){
+  // find wrong ones (based on current selections)
+  const wrongIdx=[];
+  questions.forEach((it,idx)=>{
+    const sel = document.querySelector(`input[name="q${idx}"]:checked`);
+    if(!(sel && parseInt(sel.value) === it.a)){
+      wrongIdx.push(idx);
+    }
+  });
+  if(wrongIdx.length===0){
+    alert("ไม่มีข้อผิด — ทุกข้อถูกหรือยังไม่ได้ส่งคำตอบ");
+    return;
+  }
+  // clear only wrong selections and classes, hide keys for them
+  wrongIdx.forEach(idx=>{
+    document.querySelectorAll(`input[name="q${idx}"]`).forEach(i=>i.checked=false);
+    const qdiv = document.getElementById("q"+idx);
+    qdiv.classList.remove("right","wrong");
+    document.getElementById("key"+idx).style.display="none";
+    qdiv.querySelectorAll(".opt").forEach(l=>l.style.background="");
+  });
+  // scroll to first wrong
+  const first = document.getElementById("q"+wrongIdx[0]);
+  first.scrollIntoView({behavior:"smooth",block:"center"});
+  scoreArea.style.display="none";
+}
+
+// rating stars
+document.querySelectorAll('.star').forEach(s => {
+  s.addEventListener('click', ()=> {
+    const n = parseInt(s.dataset.star);
+    document.querySelectorAll('.star').forEach(st => {
+      st.classList.toggle('selected', parseInt(st.dataset.star) <= n);
+    });
+    // store rating in session (simulation)
+    sessionStorage.setItem("rating", n);
+  });
+});
+
+document.getElementById("sendFeedback").addEventListener("click", ()=>{
+  const fb = document.getElementById("feedback").value.trim();
+  const rating = sessionStorage.getItem("rating") || "ไม่ให้คะแนน";
+  alert("บันทึกคำติชม (จำลอง)\nการให้ดาว: " + rating + "\nข้อความ: " + (fb||"(ไม่มี)"));
+});
+
+// button events
+submitBtn.addEventListener("click", submitQuiz);
+resetBtn.addEventListener("click", ()=>{ if(confirm("ต้องการรีเซ็ตทั้งหมดหรือไม่?")) resetAll(); });
+showKeyBtn.addEventListener("click", showAnswerKeys);
+retryWrongBtn.addEventListener("click", retryWrong);
+
+// initial build
+buildQuiz();
+</script>
+</body>
+</html>
